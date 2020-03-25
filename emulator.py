@@ -1,6 +1,7 @@
 import uuid
 import time
 import json
+from random import seed, random
 from connector import PubSubConnector
 
 class DeviceEmulator:
@@ -11,5 +12,26 @@ class DeviceEmulator:
 
     def send_data(self, data):
         message = {"deviceid": self.deviceId, "timestamp": time.time(), "data": data}
-        self.client.sendMessage(json.dumps(message))
-        
+        return self.client.sendMessage(json.dumps(message))
+
+    def run(self, window_size, window_interval, time_interval ):
+        info('Start sending events, window size: %d s',window_size )
+
+        # Run main sending loop
+        while True:
+            time_to_live = time.time()
+            info('Start sending window')
+
+            # Sending in time window
+            while (time.time()-time_to_live < window_size):
+                seed(time.time())
+                # Create data enity
+                entity = {"I": 100* random(), "U": 30* random()+210, "Tm": 150* random() }
+                info('Sending data: %s',str(entity))
+                result = self.send_data(entity)
+                time.sleep(time_interval)
+                info('Entity sended with result %s', str(result))
+            
+            # Pause sending for specific time
+            info('Sending window ended - waiting for next %d s',window_interval)
+            time.sleep(window_interval)   
