@@ -13,7 +13,7 @@ class DeviceEmulator:
 
     def send_data(self, data):
         message = {"deviceid": str(self.deviceId), "timestamp": time.time(), "data": data}
-        return self.client.sendMessage(json.dumps(message))
+        return self.client.sendMessage(json.dumps(message), message["deviceid"])
 
     def run(self, window_size, window_interval, time_interval ):
         info('Start sending events, window size: %d s',window_size )

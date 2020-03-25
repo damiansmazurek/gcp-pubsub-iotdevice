@@ -7,7 +7,7 @@ class PubSubConnector:
         self.publisher = pubsub_v1.PublisherClient()
         self.topic_path = self.publisher.topic_path(self.project_id, self.topic_name)
 
-    def sendMessage(self, message):
+    def sendMessage(self, message, deviceId):
         data = message.encode("utf-8")
-        future = self.publisher.publish(self.topic_path, data=data)
+        future = self.publisher.publish(self.topic_path, data=data, deviceId = deviceId )
         return future.result()
