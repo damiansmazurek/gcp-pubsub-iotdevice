@@ -3,6 +3,7 @@ import time
 import json
 from random import seed, random
 from connector import PubSubConnector
+from logging import log, info, debug, basicConfig, DEBUG, INFO
 
 class DeviceEmulator:
     def __init__(self, project_id, topic_name):
@@ -11,7 +12,7 @@ class DeviceEmulator:
         self.deviceId = uuid.uuid4()
 
     def send_data(self, data):
-        message = {"deviceid": self.deviceId, "timestamp": time.time(), "data": data}
+        message = {"deviceid": str(self.deviceId), "timestamp": time.time(), "data": data}
         return self.client.sendMessage(json.dumps(message))
 
     def run(self, window_size, window_interval, time_interval ):

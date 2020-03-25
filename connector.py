@@ -1,7 +1,5 @@
 from google.cloud import pubsub_v1
 
-# TODO project_id = "Your Google Cloud Project ID"
-# TODO topic_name = "Your Pub/Sub topic name"
 class PubSubConnector:
     def __init__(self, project_id, topic_name):
         self.project_id = project_id
@@ -11,5 +9,5 @@ class PubSubConnector:
 
     def sendMessage(self, message):
         data = message.encode("utf-8")
-        future = publisher.publish(topic_path, data=data)
+        future = self.publisher.publish(self.topic_path, data=data)
         return future.result()
