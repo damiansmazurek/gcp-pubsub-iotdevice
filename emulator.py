@@ -12,7 +12,7 @@ class DeviceEmulator:
         self.deviceId = uuid.uuid4()
 
     def send_data(self, data):
-        message = {"deviceid": str(self.deviceId), "timestamp": time.time(), "data": data}
+        message = data
         return self.client.sendMessage(json.dumps(message), message["deviceid"])
 
     def run(self, window_size, window_interval, time_interval ):
@@ -27,7 +27,7 @@ class DeviceEmulator:
             while (time.time()-time_to_live < window_size):
                 seed(time.time())
                 # Create data enity
-                entity = {"I": 100* random(), "U": 30* random()+210, "Tm": 150* random() }
+                entity = {"I": 100* random(), "U": 30* random()+210, "Tm": 150* random(), "deviceid": str(self.deviceId), "timestamp": time.time() }
                 info('Sending data: %s',str(entity))
                 result = self.send_data(entity)
                 time.sleep(time_interval)
